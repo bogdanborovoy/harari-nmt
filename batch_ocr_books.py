@@ -129,6 +129,9 @@ def call_ocr_api(img_bytes: bytes, model_name: str, max_retries: int = 4) -> str
             err_body = e.read().decode("utf-8", errors="replace")
             # Rate limit or quota
             if e.code == 429:
+                if attempt == max_retries - 1 and model_name != FALLBACK_MODEL:
+                    print(f"  [*] 429 Quota exhausted for {model_name}. Switching to fallback: {FALLBACK_MODEL}")
+                    return call_ocr_api(img_bytes, FALLBACK_MODEL, max_retries=2)
                 wait_time = (2 ** attempt) * 5 + 5
                 print(f"  [429 Rate Limit] Retrying in {wait_time}s...")
                 time.sleep(wait_time)
