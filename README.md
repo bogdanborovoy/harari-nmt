@@ -48,18 +48,15 @@ This project delivers the **first open, reproducible end-to-end NLP infrastructu
 
 Harari exhibits linguistic traits typical of South Ethiosemitic languages, presenting unique challenges for standard tokenization and sequence-to-sequence modeling:
 
-```mermaid
-flowchart TD
-    subgraph Morpho ["Morpho-Syntactic Peculiarities of Harari"]
-        direction TB
-        M1["Root-and-Pattern Semitic Morphology: Triconsonantal Roots + 12 Verb Classes"]
-        M2["Agglutinative Clitic Stacking: Prefixes (Rel, Prep) + Verb + Object Suffixes"]
-        M3["Relative Verbal Envelope: zi- ... -zāl Construction"]
-        M4["Strict SOV Typology: Head-Final, Circumpositions, Head-Marking"]
-        M5["Multi-Script Heterogeneity: Ethiopic Fidel, Latin/IPA, Arabic Ajami"]
-        M6["Urban Code-Switching: Complex Diglossia with Amharic and Afaan Oromo"]
-    end
-```
+| Morpho-Syntactic Feature | Linguistic Realization in Harari | NLP & Engineering Challenge |
+| :--- | :--- | :--- |
+| **Root-and-Pattern Morphology** | Triconsonantal roots ($\sqrt{C_1 C_2 C_3}$) modulated across 12 verb classes | Severe lexical dispersion, high OOV rate for standard subword tokenizers |
+| **Agglutinative Clitic Stacking** | Prefixes (Rel, Prep) + Verb Stem + Tense + Object Pronoun Suffixes | Single orthographic token encodes full propositional clause |
+| **Relative Verbal Envelope** | Discontinuous circumclitic framing: `zi- ... -zāl` | Requires robust long-range self-attention resolution in encoder |
+| **Head-Final SOV Typology** | Strict verb-final order, postpositions, modifiers precede noun heads | Large reordering penalty and structural divergence when translating to SVO |
+| **Multi-Script Orthography** | Ethiopic Fidel, Latin/IPA (Leslau/AAU), Arabic Ajami | Unicode NFC normalization and homophone-merging mandatory |
+| **Urban Trilingual Diglossia** | Dynamic conversational code-switching with Amharic and Afaan Oromo | Strict language-ID and perplexity filtering to prevent training set corruption |
+
 
 ### 2.1. Non-Concatenative Root-and-Pattern Morphology
 Like classical Semitic languages (Arabic, Ge'ez), Harari verbal and nominal systems are governed by discontinuous consonantal roots (primarily triconsonantal $\sqrt{C_1 C_2 C_3}$) modulated by internal vocalic apophony (ablaut) and derivational templates. Harari grammars categorize verbs into **12 distinct derivational and conjugational classes** (Classes A, B, C, and their frequentative, reciprocal, and causative expansions). A single root yields dozens of morphologically distinct surface forms, creating high lexical dispersion and severe Out-Of-Vocabulary (OOV) challenges for standard subword tokenizers.
@@ -274,30 +271,15 @@ flowchart LR
 To ensure high velocity and prevent paralysis from academic debates, project responsibilities are strictly demarcated:
 
 ```mermaid
-flowchart LR
-    subgraph Engineering ["ML & Data Engineering (NLP Engineer)"]
-        E1["OCR Pipeline & Preprocessing"]
-        E2["Tokenizer Expansion & BPE Training"]
-        E3["Continual Pre-training & LoRA Fine-Tuning"]
-        E4["Quantization & Inference Engine (ONNX, PyTorch)"]
-        E5["Web Demo & Telegram Bot Infrastructure"]
-    end
+%%{init: {'flowchart': {'curve': 'basis'}}}%%
+flowchart TD
+    ENG["<b>NLP Engineer (ML & Data Engineering)</b><br/>OCR Pipelines, Tokenizer Adaptation, Continual Pre-training, LoRA, ONNX CPU"]
+    LING["<b>Ethiopianist (Linguistic Authority)</b><br/>Corpus Arbitration, Unicode Orthographic Normalization, Golden Benchmark"]
+    DIAS["<b>Global Diaspora (Community Validation)</b><br/>Colloquial Evaluation, Living Idiom Contributions, Real-World Edge-Case Testing"]
 
-    subgraph Linguistic ["Linguistic Authority (Ethiopianist)"]
-        L1["Sentence Alignment Arbitration"]
-        L2["Fidel Unicode Orthographic Normalization"]
-        L3["Golden Benchmark Construction (300-500 Sentences)"]
-        L4["Qualitative Error Taxonomy Analysis"]
-    end
-
-    subgraph Diaspora ["Community Validation (Global Diaspora)"]
-        D1["Crowdsourced Error Reporting"]
-        D2["Colloquial Conversational Data Contribution"]
-        D3["Dialectal & Edge-Case Validation"]
-    end
-
-    Engineering <--> Linguistic
-    Linguistic <--> Diaspora
+    ENG -->|"1. Model audits & predictions"| LING
+    LING -->|"2. Dialectal testing & idioms"| DIAS
+    DIAS -->|"3. Live community error reports"| ENG
 ```
 
 * **ML & Data Engineering (NLP Engineer):** Pipeline construction, OCR automation, subword tokenization, GPU model training, ONNX quantization, and deployment.
@@ -367,24 +349,17 @@ Native digital Unicode PDF texts requiring zero Vision OCR quota (instant direct
 
 Beyond the 20 physical volumes and curated dictionaries in Phase 1, the following external digital sources have been cataloged in [`harari_internet_sources.md`](harari_internet_sources.md) for subsequent ingestion phases:
 
-```mermaid
-flowchart TD
-    subgraph Backlog ["Digital & Community Sources (Phases 2-9 Ingestion)"]
-        direction TB
-        B1["Social Feeds: Telegram (@hararimassmediaagency, @HarariGovernmentCommunication, @CoolHarari)"]
-        B2["Regional Facebook: Harari Mass Media (81k), Gov Communication (Parallel Harari/Amharic)"]
-        B3["Mobile & Web Apps: Harari Word Translate (HWT Android), Glosbe TM (~1,000 pairs)"]
-        B4["Diaspora Hubs: Melbourne (Saay Harari), Toronto (Heritage Centre), Dallas (Hararis United)"]
-        B5["Speech Archives: Harari Broadcasting Network on YouTube (>500 hrs for ASR)"]
-    end
-    subgraph Excluded ["Excluded / Inactive Sources"]
-        direction TB
-        E1["Federal Ethiopian Pages: 0% Harari (100% Amharic/Oromo)"]
-        E2["Haramaya University Server: Inaccessible timeout, agricultural focus"]
-        E3["Wikimedia Incubator (Wp/har): Empty 1-page stub"]
-    end
-    Backlog --> Pipeline["Future Pipeline Ingestion"]
-```
+| Category | Channel / Platform | Estimated Yield | Pipeline Ingestion Role |
+| :--- | :--- | :--- | :--- |
+| **Regional News & Feeds** | Telegram (`@hararimassmediaagency`, `@HarariGovernmentCommunication`) | ~30k–50k words | Unsupervised text for continual pre-training (MLM) |
+| **Bilingual Admin Releases** | Facebook (Harari Mass Media Agency, Regional Gov Communication) | ~10k–15k pairs | Automated bitext mining (Harari ↔ Amharic) |
+| **Digital Lexicons** | Harari Word Translate (Android), Glosbe TM | ~2,000 entries | Lexicon injection & sanity checks |
+| **Speech Audio Archive** | YouTube (*Harari Broadcasting Network*, >10,000 videos) | >500 hours | Future Voice-to-Text (ASR) transcription & speech bitext |
+| **Diaspora Communities** | Melbourne (Saay Harari), Toronto Heritage Centre, Dallas | Qualitative | Golden benchmark validation & idiomatic auditing |
+
+> [!NOTE]
+> **Pruned / Inactive Sources:** Federal Ethiopian portals contain 0% Harari content (Amharic/Oromo only); Haramaya University repository servers suffer from persistent connection timeouts and agricultural focus; Wikimedia Incubator (`Wp/har`) remains an abandoned single-line stub.
+
 
 ### 9.1. Telegram Channels (Native UTF-8 Modern Text)
 * **`@hararimassmediaagency`:** Daily regional news articles published in standard Fidel script.
