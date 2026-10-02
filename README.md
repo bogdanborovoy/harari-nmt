@@ -156,31 +156,34 @@ Older works like Dr. Abdurahman's 1984 *Chuqtee Kitab* were composed on mechanic
 The comprehensive research roadmap is structured into three consecutive stages across 10 execution phases:
 
 ```mermaid
-flowchart TD
-    subgraph Stage1 ["Stage I: Representation Learning & Bitext Mining"]
+flowchart LR
+    subgraph Stage1 ["Stage I: Representation Foundation"]
         direction TB
-        P1["Phase 1: Multi-Script Corpus Curation & Vision OCR"]
-        P2["Phase 2: Ethiosemitic Subword Tokenizer Adaptation"]
-        P3["Phase 3: Continual Pre-training (Afro-XLMR + MLM + LoRA)"]
-        P4["Phase 4: Morphological Probing & Validation Suite"]
-        P5["Phase 5: Dense Retrieval & Unsupervised Bitext Mining"]
+        P1["Phase 1: Multi-Script Curation & OCR"]
+        P2["Phase 2: Subword Tokenizer Adaptation"]
+        P3["Phase 3: Continual Pre-training (Afro-XLMR)"]
+        P4["Phase 4: Morphological Probing Suite"]
+        P5["Phase 5: Dense Retrieval & Bitext Mining"]
         P1 --> P2 --> P3 --> P4 --> P5
     end
 
-    subgraph Stage2 ["Stage II: Neural Machine Translation Pipeline"]
+    subgraph Stage2 ["Stage II: Translation Pipeline"]
         direction TB
-        P6["Phase 6: Parallel Bitext Synthesis & Lexicon Injection (50k pairs)"]
-        P7["Phase 7: Seq2Seq Transfer Fine-Tuning (NLLB-200 / ByT5)"]
-        P8["Phase 8: Golden Test Benchmark & Human-in-the-Loop QA"]
-        P5 --> P6 --> P7 --> P8
+        P6["Phase 6: 50k Bitext Dataset Synthesis"]
+        P7["Phase 7: Seq2Seq Transfer Fine-Tuning"]
+        P8["Phase 8: Golden Test Benchmark & QA"]
+        P6 --> P7 --> P8
     end
 
-    subgraph Stage3 ["Stage III: Scaling, Academic Partnership & Deployment"]
+    subgraph Stage3 ["Stage III: Scaling & Production"]
         direction TB
-        P9["Phase 9: Dataset Scaling & Community Crowdsourcing (>30 BLEU)"]
-        P10["Phase 10: Downstream Deployment & Upstreaming (FLORES, HF, Telegram)"]
-        P8 --> P9 --> P10
+        P9["Phase 9: Dataset Scaling & Crowdsourcing"]
+        P10["Phase 10: Deployment & Upstreaming"]
+        P9 --> P10
     end
+
+    P5 --> P6
+    P8 --> P9
 ```
 
 ### Phase 1: Robust Vision OCR & Data Ingestion
@@ -277,7 +280,7 @@ flowchart LR
 To ensure high velocity and prevent paralysis from academic debates, project responsibilities are strictly demarcated:
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Engineering ["ML & Data Engineering (NLP Engineer)"]
         E1["OCR Pipeline & Preprocessing"]
         E2["Tokenizer Expansion & BPE Training"]

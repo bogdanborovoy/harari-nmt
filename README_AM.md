@@ -59,31 +59,34 @@
 ## 3. የ 10 ምዕራፎች የምርምር ማስተር-ፕላን
 
 ```mermaid
-flowchart TD
-    subgraph Stage1 ["ደረጃ I: የውክልና መሰረት እና የትይዩ ጽሑፍ ፍለጋ"]
+flowchart LR
+    subgraph Stage1 ["ደረጃ I: የውክልና መሰረት"]
         direction TB
-        P1["ምዕራፍ 1: የ 20 መጻሕፍት Vision OCR እና ጽዳት"]
-        P2["ምዕራፍ 2: የ BPE ቶከናይዘር ማሻሻያ ለሐረሪ ሰዋሰው"]
-        P3["ምዕራፍ 3: ቀጣይነት ያለው ቅድመ-ስልጠና (Afro-XLMR + MLM + LoRA)"]
-        P4["ምዕራፍ 4: የስነ-ልሳን ምርመራ እና ግምገማ (Probing)"]
-        P5["ምዕራፍ 5: የትይዩ ጽሑፍ ፍለጋ ከዜናዎች (Bitext Mining)"]
+        P1["ምዕራፍ 1: Vision OCR እና ጽዳት"]
+        P2["ምዕራፍ 2: የ BPE ቶከናይዘር ማሻሻያ"]
+        P3["ምዕራፍ 3: ቅድመ-ስልጠና (Afro-XLMR)"]
+        P4["ምዕራፍ 4: የስነ-ልሳን ምርመራ"]
+        P5["ምዕራፍ 5: የትይዩ ጽሑፍ ፍለጋ"]
         P1 --> P2 --> P3 --> P4 --> P5
     end
 
-    subgraph Stage2 ["ደረጃ II: የነርቭ ማሽን ትርጉም ግንባታ (NMT Pipeline)"]
+    subgraph Stage2 ["ደረጃ II: የትርጉም ግንባታ"]
         direction TB
-        P6["ምዕራፍ 6: የ 50k ትይዩ ዓረፍተ-ነገሮች ውህደት"]
-        P7["ምዕራፍ 7: የ Seq2Seq ትራንስፈር ስልጠና (NLLB-200 / ByT5)"]
-        P8["ምዕራፍ 8: የወርቅ መመዘኛ እና የባለሙያ ፍተሻ (Human-in-the-Loop)"]
-        P5 --> P6 --> P7 --> P8
+        P6["ምዕራፍ 6: 50k ትይዩ ዳታሴት"]
+        P7["ምዕራፍ 7: የ Seq2Seq ስልጠና"]
+        P8["ምዕራፍ 8: የወርቅ መመዘኛ እና ፍተሻ"]
+        P6 --> P7 --> P8
     end
 
-    subgraph Stage3 ["ደረጃ III: ማስፋፊያ፣ ማህበረሰብ እና አገልግሎት"]
+    subgraph Stage3 ["ደረጃ III: ማስፋፊያ እና አገልግሎት"]
         direction TB
-        P9["ምዕራፍ 9: ዳታሴት ማስፋፋት እና የማህበረሰብ ተሳትፎ (>30 BLEU)"]
-        P10["ምዕራፍ 10: ይፋዊ መልቀቅ፣ FLORES ውህደት እና ቦቶች"]
-        P8 --> P9 --> P10
+        P9["ምዕራፍ 9: ዳታሴት ማስፋፋት (>30 BLEU)"]
+        P10["ምዕራፍ 10: ይፋዊ መልቀቅ እና ቦቶች"]
+        P9 --> P10
     end
+
+    P5 --> P6
+    P8 --> P9
 ```
 
 ### አበይት ምዕራፎች በአጭሩ፡
@@ -99,7 +102,7 @@ flowchart TD
 ## 4. የኃላፊነት ክፍፍል (Human-in-the-Loop)
 
 ```mermaid
-flowchart TD
+flowchart LR
     subgraph Engineering ["የማሽን ትምህርት እና መረጃ ምህንድስና (NLP Engineer)"]
         E1["የ OCR መስመር እና የጽሑፍ ማጣሪያ"]
         E2["የቶከናይዘር ዝግጅት እና የ BPE ስልጠና"]
