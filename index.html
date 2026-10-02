@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harari NMT • Corpus Digitization & Research Dashboard</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Ethiopic:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .ethiopic-font {
+      font-family: 'Noto Sans Ethiopic', 'Inter', sans-serif;
+    }
+    .mono-font {
+      font-family: 'JetBrains Mono', monospace;
+    }
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.03);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .pulse-active {
+      animation: pulse-slow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="bg-[var(--background,#0b0f19)] text-[var(--foreground,#f1f5f9)] min-h-screen antialiased selection:bg-emerald-500/20 selection:text-emerald-400">
+
+  <!-- Background decorative glows -->
+  <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+    <div class="absolute -top-40 left-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/3 -right-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl"></div>
+    <div class="absolute -bottom-20 left-1/3 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+    <!-- TOP HEADER / NAV -->
+    <header class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-[var(--border,#1e293b)] gap-4">
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 text-xs font-semibold tracking-wider text-emerald-400 uppercase bg-emerald-950/60 border border-emerald-800/60 rounded-full flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 pulse-active"></span>
+            Live Pipeline Active
+          </span>
+          <span class="text-xs text-[var(--muted-foreground,#94a3b8)] mono-font">models/gemini-3.5-flash-lite</span>
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-[var(--foreground,#f8fafc)] flex items-center gap-2">
+          <span>ሐረሪ NMT Corpus Hub</span>
+          <span class="text-xs font-normal text-emerald-400/80 bg-emerald-950/40 border border-emerald-800/40 px-2 py-0.5 rounded">Academic Bench</span>
+        </h1>
+        <p class="text-sm text-[var(--muted-foreground,#94a3b8)] max-w-2xl">
+          Automated multi-modal Vision OCR digitization and parallel corpora collation for the endangered Afroasiatic Harari language (Gēy Sinān / ሐረሪ).
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2.5">
+        <a href="https://github.com/bogdanborovoy/harari-nmt" target="_blank" class="inline-flex items-center gap-2 px-3.5 py-2 text-xs font-medium bg-[var(--card,#131b2e)] hover:bg-[var(--border,#1e293b)] text-[var(--foreground,#e2e8f0)] border border-[var(--border,#1e293b)] rounded-lg transition-colors shadow-sm">
+          <svg class="w-4 h-4 text-[var(--muted-foreground,#94a3b8)]" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          <span>bogdanborovoy/harari-nmt</span>
+        </a>
+        <button onclick="window.location.reload()" class="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg transition-colors shadow-sm shadow-emerald-950/40">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Refresh Data</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- KEY STATS CARDS -->
+    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4" id="statsCards">
+      <!-- Injected via JS -->
+    </section>
+
+    <!-- OVERALL PROGRESS BAR -->
+    <section class="bg-[var(--card,#131b2e)] border border-[var(--border,#1e293b)] rounded-xl p-5 shadow-sm space-y-3">
+      <div class="flex items-center justify-between text-sm">
+        <div class="flex items-center gap-2">
+          <span class="font-semibold text-[var(--foreground,#f8fafc)]">Digitization Completion</span>
+          <span class="text-xs text-[var(--muted-foreground,#94a3b8)] mono-font">(Checkpoint Verified)</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="text-xs text-[var(--muted-foreground,#94a3b8)]" id="pageProgressSubtitle">1,541 / 2,432 pages</span>
+          <span class="text-sm font-bold text-emerald-400 mono-font" id="overallPercentBadge">63.4%</span>
+        </div>
+      </div>
+      <div class="w-full h-3 bg-slate-800/80 rounded-full overflow-hidden p-0.5 border border-slate-700/50">
+        <div id="mainProgressBar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-cyan-400 rounded-full transition-all duration-700" style="width: 63.4%"></div>
+      </div>
+      <div class="flex items-center justify-between text-xs text-[var(--muted-foreground,#94a3b8)] pt-1">
+        <div class="flex items-center gap-4">
+          <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-emerald-400"></span> 11 Completed</span>
+          <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-amber-400"></span> 1 In Progress</span>
+          <span class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-slate-500"></span> 4 Queued</span>
+        </div>
+        <span class="mono-font text-slate-400">Target: 16 Academic Volumes (100%)</span>
+      </div>
+    </section>
+
+    <!-- TOKEN & LINGUISTIC CALCULATOR -->
+    <section class="bg-[var(--card,#131b2e)] border border-[var(--border,#1e293b)] rounded-xl p-5 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <h2 class="text-base font-semibold text-[var(--foreground,#f8fafc)] flex items-center gap-2">
+            <span>Ethiopic Fidel Syllabic Token Breakdown</span>
+            <span class="text-xs px-2 py-0.5 rounded bg-blue-950/60 border border-blue-800/60 text-blue-400">NLP Calibrated</span>
+          </h2>
+          <p class="text-xs text-[var(--muted-foreground,#94a3b8)]">
+            Why token counts vary across architectures: Fidel represents CV (consonant-vowel) syllables in UTF-8 (3 bytes/char).
+          </p>
+        </div>
+        <div class="text-xs text-[var(--muted-foreground,#94a3b8)] mono-font bg-slate-900/60 px-3 py-1.5 rounded border border-slate-800">
+          Avg: <span class="text-emerald-400 font-semibold">5.43 chars/word</span> • <span class="text-cyan-400 font-semibold">3 bytes/Fidel char</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5 pt-1">
+        <div class="p-4 rounded-lg bg-slate-900/50 border border-slate-800/80 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-emerald-400 uppercase tracking-wide">NMT Custom BPE / SentencePiece</span>
+            <span class="text-xs mono-font text-slate-400">Ratio ~1.6x</span>
+          </div>
+          <div class="text-xl font-bold mono-font text-emerald-300" id="tokenNMT">~497,000 tokens</div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Calibrated on Ethiopic subwords (vocab 32k). Optimized for NLLB-200 &amp; ByT5 Seq2Seq fine-tuning.
+          </p>
+          <div class="text-xs text-slate-500 pt-1 border-t border-slate-800">Projected 100%: <strong class="text-slate-300">~850,000 tokens</strong></div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-900/50 border border-slate-800/80 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-cyan-400 uppercase tracking-wide">Multilingual LLMs (Gemini / Claude)</span>
+            <span class="text-xs mono-font text-slate-400">Ratio ~2.3x</span>
+          </div>
+          <div class="text-xl font-bold mono-font text-cyan-300" id="tokenGemini">~715,000 tokens</div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Morphological subwords shared with Amharic/Tigrinya corpora. Moderate compression efficiency.
+          </p>
+          <div class="text-xs text-slate-500 pt-1 border-t border-slate-800">Projected 100%: <strong class="text-slate-300">~1,150,000 tokens</strong></div>
+        </div>
+
+        <div class="p-4 rounded-lg bg-slate-900/50 border border-slate-800/80 space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-semibold text-purple-400 uppercase tracking-wide">English-Centric LLMs (GPT-4 / Llama)</span>
+            <span class="text-xs mono-font text-slate-400">Ratio ~5.2x</span>
+          </div>
+          <div class="text-xl font-bold mono-font text-purple-300" id="tokenGPT">~1,615,000 tokens</div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Heavy character/byte-level fragmentation. Each Fidel character is 1 token or multiple byte tokens.
+          </p>
+          <div class="text-xs text-slate-500 pt-1 border-t border-slate-800">Projected 100%: <strong class="text-slate-300">~2,600,000 tokens</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOOKS SECTION WITH FILTERS -->
+    <section class="space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h2 class="text-lg font-semibold text-[var(--foreground,#f8fafc)] flex items-center gap-2">
+            <span>Corpus Ingestion Registry</span>
+            <span class="text-xs text-[var(--muted-foreground,#94a3b8)]">(16 Volumes)</span>
+          </h2>
+          <p class="text-xs text-[var(--muted-foreground,#94a3b8)]">
+            Track real-time OCR transcription status, word metrics, and sample page previews across all volumes.
+          </p>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="flex flex-wrap items-center gap-2">
+          <div class="flex items-center bg-slate-900/80 p-0.5 rounded-lg border border-slate-800 text-xs">
+            <button onclick="filterStatus('ALL')" id="btnFilterALL" class="px-2.5 py-1 rounded-md font-medium bg-emerald-600 text-white transition-colors">All (16)</button>
+            <button onclick="filterStatus('COMPLETE')" id="btnFilterCOMPLETE" class="px-2.5 py-1 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Completed (11)</button>
+            <button onclick="filterStatus('IN_PROGRESS')" id="btnFilterIN_PROGRESS" class="px-2.5 py-1 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Active (1)</button>
+            <button onclick="filterStatus('QUEUED')" id="btnFilterQUEUED" class="px-2.5 py-1 rounded-md font-medium text-slate-400 hover:text-white transition-colors">Queued (4)</button>
+          </div>
+
+          <div class="relative">
+            <input type="text" id="bookSearchInput" oninput="onSearchInput(this.value)" placeholder="Search books..." class="w-44 sm:w-56 text-xs bg-slate-900/90 text-slate-200 placeholder-slate-500 border border-slate-800 rounded-lg px-3 py-1.5 focus:outline-none focus:border-emerald-500/80 transition-colors">
+            <span class="absolute right-2.5 top-2 text-slate-500 pointer-events-none text-xs">🔍</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKS GRID -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="booksGrid">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE & PIPELINE INSPECTION -->
+    <section class="bg-[var(--card,#131b2e)] border border-[var(--border,#1e293b)] rounded-xl p-5 shadow-sm space-y-4">
+      <h3 class="text-base font-semibold text-[var(--foreground,#f8fafc)] flex items-center gap-2">
+        <span>Data Flywheel &amp; Optical Preprocessing Architecture</span>
+        <span class="text-xs px-2 py-0.5 rounded bg-purple-950/60 border border-purple-800/60 text-purple-400">V2.0 Pipeline</span>
+      </h3>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-3 text-xs">
+        <div class="p-3.5 rounded-lg bg-slate-900/40 border border-slate-800/80 space-y-1.5">
+          <div class="font-semibold text-emerald-400 flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-emerald-950 flex items-center justify-center border border-emerald-800 text-xs">1</span>
+            High-DPI PDF Rendering
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            PyMuPDF renders 150 DPI JPEG slices. High quality balance avoiding Gemini Vision token exhaustion while preserving fine Ge'ez diacritic marks.
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-slate-900/40 border border-slate-800/80 space-y-1.5">
+          <div class="font-semibold text-cyan-400 flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-cyan-950 flex items-center justify-center border border-cyan-800 text-xs">2</span>
+            Multimodal OCR Engine
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            Gemini 3.5 Flash-Lite transcribed via strict <span class="mono-font text-cyan-300">&lt;TRANSCRIPTION&gt;</span> XML isolation tags with fallback to Gemini 3.1 Flash-Lite.
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-slate-900/40 border border-slate-800/80 space-y-1.5">
+          <div class="font-semibold text-amber-400 flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-amber-950 flex items-center justify-center border border-amber-800 text-xs">3</span>
+            Autocontrast Recovery
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            Dedicated second-pass filter using PIL autocontrast + 3.0x dynamic range stretching to decipher faded blue mimeograph ink (<span class="mono-font text-amber-300">синька/ротапринт</span>).
+          </p>
+        </div>
+
+        <div class="p-3.5 rounded-lg bg-slate-900/40 border border-slate-800/80 space-y-1.5">
+          <div class="font-semibold text-purple-400 flex items-center gap-1.5">
+            <span class="w-5 h-5 rounded-full bg-purple-950 flex items-center justify-center border border-purple-800 text-xs">4</span>
+            Full-Text Collation
+          </div>
+          <p class="text-slate-400 leading-relaxed">
+            Automated collation into unified <span class="mono-font text-purple-300">*_FULL.txt</span> books with page delimiters, pre-tokenization sanitization, and parallel sentence alignment.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="pt-6 border-t border-[var(--border,#1e293b)] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--muted-foreground,#94a3b8)]">
+      <div>
+        Harari Neural Machine Translation Research Repository • Open Science under MIT License
+      </div>
+      <div class="mono-font text-slate-500">
+        Generated dynamically on Oct 2, 2026 • Localhost Port 8000 / Artifact Viewer
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- EMBEDDED REAL DATA -->
+  <script>
+    const CORPUS_DATA = {"totalPages": 2432, "donePages": 1541, "totalWords": 310647, "totalChars": 1685963, "totalSizeMB": 2.83, "overallPercent": 63.36, "completedBooks": 11, "inProgressBooks": 1, "queuedBooks": 4, "books": [{"slug": "ECM_proverbs_239p", "filename": "ECM_proverbs_239p.pdf", "totalPages": 239, "donePages": 239, "status": "COMPLETE", "percent": 100.0, "category": "Proverbs & Folklore", "desc": "Folklore / Wisdom literature in Ethiopic Fidel", "words": 30751, "chars": 135750, "sizeKB": 308.0, "preview": "ሐረሪ ወሪ ግናኛች\nየሐረሪ ፊልማዊ አነጋገሮች\n\nጋሚላ መርስስ (ስ)\nጋሚላ ኢ.ን ዘመጣ (ስ)\nጋሚላ ጊዜ (ስ)\nጋር\nጋር አባት ባቲ (ስ)\nጋር ሐዋዝ’ (ስ)\nጋር ሐዱማ (ስ)\nጋር ሐ፳ (ስ)\nጋር ለመድ ኡሪ (ስ)\nጋር መሐዋ (ስ)\nጋር መልታጶ (ስ)\nጋር መቆፈል (ግ)\nጋር መቺሻል ( ግ..."}, {"slug": "content", "filename": "https:::etd.aau.edu.et:server:api:core:bitstreams:7b1a2ccf-ad40-436a-80c2-f6d081067c9c:content.pdf", "totalPages": 91, "donePages": 91, "status": "COMPLETE", "percent": 100.0, "category": "Academic Thesis", "desc": "Linguistic analysis and Harari dialectal study", "words": 13582, "chars": 99090, "sizeKB": 97.3, "preview": "sq. km with a population of more than 120, 000 (Asnake 2010:211). Harari is the\nlanguage spoken by the Harari people and in previous times by people who live\nonly inside of the wal..."}, {"slug": "MEDEBEL_PDF", "filename": "https:::everythingharar.com:wp-content:uploads:2020:06:MEDEBEL.PDF.pdf", "totalPages": 249, "donePages": 249, "status": "COMPLETE", "percent": 100.0, "category": "Anthology / Literature", "desc": "Prose, historical texts, and poetry", "words": 45345, "chars": 231361, "sizeKB": 535.5, "preview": "ሂታሪኸኛ ስሰማ\n\nቁጥር 2 - የዳግማዊ ምኒልክ መንግስት ሲዋጥ የሞቱት ሁለ ንብረታቸው\nተወርሶ ወደ መንግስት ግምጃ ቤት ገቢ እንዲሆን ። (ወሬራዎች የደን\nቤት ሌሎች ሀረሶች የደም ቤት አሉት)\n\nቁጥር 3 - አሚሩ ለዳግማዊ ንጉሠ ነገሥት መንግስት 40,000 የማሪያ\nትሬዛ ብር እንዲከፍ..."}, {"slug": "BreakdownHarariGrammerEH", "filename": "https::everythingharar.com:wp-content:uploads:2017:02:BreakdownHarariGrammerEH.pdf", "totalPages": 151, "donePages": 151, "status": "COMPLETE", "percent": 100.0, "category": "Grammar & Morphology", "desc": "Grammar breakdown, verbal stems, affixation rules", "words": 36022, "chars": 233940, "sizeKB": 296.3, "preview": "BREAK DOWN OF HARARI GRAMMAR\n\nCHAPTER TWO\nHARARI DICTION AND CONNECTORS\n\n2.1. Diction of Harari Language ሐረሪ ጨምቍቲ\n\nThis chapter is on aspects of the Harari dictions, metathesis wor..."}, {"slug": "LesluHarariDictionary145", "filename": "https::everythingharar.com:wp-content:uploads:2017:02:LesluHarariDictionary145.pdf", "totalPages": 86, "donePages": 86, "status": "COMPLETE", "percent": 100.0, "category": "Lexicon / Dictionary", "desc": "Wolf Leslau Harari-English-Amharic comparative lexicon", "words": 79958, "chars": 482253, "sizeKB": 522.9, "preview": "bility should not be excluded that the Arabic loanwords might\ninto Galla or Somali through the intermediary of Harari.\n\nSome of the Arabic loanwords that came into Harari are of\nsu..."}, {"slug": "Wareg_Sinan_0001watermark", "filename": "https::everythingharar.com:wp-content:uploads:2017:02:Wareg_Sinan_0001watermark.pdf", "totalPages": 49, "donePages": 49, "status": "COMPLETE", "percent": 100.0, "category": "Linguistic Primer", "desc": "Harari language basics and vocabulary primer", "words": 6702, "chars": 30334, "sizeKB": 69.6, "preview": "ወሬግ ሲናን\n\n93\tመል ዘለላ\tፋይዳ ዘለላ፤ ዘይረፋ።\n94\tመል በዴ\tቂሳ ብኜ፤ ሕቃብ ዘቍጣ።\n95\tመሎዮ ወል\tኲናስ ዘሙዊታ ኡሉል።\n96\tመሬጪ ማግዲ\tኡሉስ ፈር ያኸይል፤ ዘይርካ፤ አር ጠቢእ ዘለላ፤ እንዲዳ።\n97\tመረሽ ሰቻ\tተበ ባው፡ ረሰሕ።\n98\tመረሽ መድፋእ\tመትኻለ፤ መትቀበጥ፤ መት..."}, {"slug": "Wareg_Zaman-1_2", "filename": "https::everythingharar.com:wp-content:uploads:2017:02:Wareg_Zaman-1_2.pdf", "totalPages": 163, "donePages": 161, "status": "COMPLETE", "percent": 98.8, "category": "Historical Narrative (Vol 1)", "desc": "Chronicles and historical records of Harar", "words": 33199, "chars": 148036, "sizeKB": 351.4, "preview": "viii ----------------- ወሪግ ዘማን -----------------\n\nመሰሳያቸው ቀብብቲሌ\n\nዘማንዢ ታርኸሼ ባባችሽ አበቸነትሌ\nሐፍ ባዩ ሕሐሬነትሌ ፈረረ ፎኘ ዶቅቲሌ\nከም ሰረ ዘለሳች ባይነቱ መልክድሌ\nአዜዝነት እበረለ አልታች ሽሄድነትሌ\nመትንቀለሌ በቆ በታረኘ አርሬትሌ\nሩሕቤ..."}, {"slug": "Wareg_Zaman-2_2", "filename": "https::everythingharar.com:wp-content:uploads:2017:02:Wareg_Zaman-2_2.pdf", "totalPages": 164, "donePages": 161, "status": "COMPLETE", "percent": 98.2, "category": "Historical Narrative (Vol 2)", "desc": "Historical chronicles, continuation volume", "words": 31388, "chars": 148010, "sizeKB": 350.8, "preview": "132\nወሬማ ዘማን\n\nቤሐር ነሣፈት አበራ ስምኀንቲ ፈረዝ ፳መበ ረኽሱ።\nደል ዘረኽብር ነሣፈት ዘሞቱ ኡሉላት እንገተው\nኪልጳጣል ዘትግረኜ ገራድ አሕመሸ በሱ ኧትን ፭ኝ\nአሰዱ፡ ዲልቢ መትዋጠእበለ ተስቲኪ ዘናረ ልብነ ድንገል\nወትቲሣ ቴሰበረ ገራድ አሕመሻው መጋርም ቤሐር ገደ\nለዬ። ቤት አ..."}, {"slug": "keetab-fraeed", "filename": "https::everythingharar.com:wp-content:uploads:2017:02:keetab-fraeed.pdf", "totalPages": 104, "donePages": 104, "status": "COMPLETE", "percent": 100.0, "category": "Religious & Classical", "desc": "Classical Harari Islamic manuscript & religious poetry", "words": 10102, "chars": 51300, "sizeKB": 111.5, "preview": "አሳሳ መገን\n\nኢታ ኪታበዉ ሽĈጠበ ኪል ኲቱብ መናጠበላ ሳቅሊ ጊርጋሬ ዛሤናች ኪዚፈ\nሲጂ አሚር ኧብዱሳሇ /ቻደና/ ሞ ኪል አኲጓደ ኧ/ሰመድ ቱረ ኧንባሐ ደሰገደ\nዘሳየሊ ማኧናቸዉ መስጠበ ሸĈጠበዘ ኸማእ ዚኟችዉ መርገገበበ\nመቀናናኧቲ መስጠበ ጊርጋር ጊርጋሪ ዛሤኝ ኧደ ረዉዳ መሐመድ ቀሎ፥..."}, {"slug": "HIBIRI_WA_GIBERY", "filename": "https::everythingharar.com:wp-content:uploads:2020:06:HIBIRI_WA_GIBERY.pdf", "totalPages": 79, "donePages": 78, "status": "COMPLETE", "percent": 98.7, "category": "Cultural Studies", "desc": "Cultural heritage, traditions, and social structures", "words": 9689, "chars": 51812, "sizeKB": 91.1, "preview": "ሐባሬ ቲሪየው ቲሪ ሄሞንግ ዘትሐበራሳ\nተሐባሬ /ች/ ሚን ቲሪ ዩሱማንግ ሄሶሳ\nሐባሬ ሐብለ ዋ ጊርጋት ቲሪየው ቲሪወ የትሒበራል።\nተሐባሬ /ች/ ሐብለወ ሄያ የርገባጋል።\n\nሐብለ ዋ ጊርጋት ቲሪየው ቲሪቤ አሐድ ዘትሐበራም ዚታሐቢ\nራወ ስራኩትቤ ባሕለ ያሽኮታቤ ሲሬ ዋ ሐሒ/ረቂቅ/ ዚታ ሚሳ..."}, {"slug": "Radinet_Ahdi_Khalid_4Print112", "filename": "https::everythingharar.com:wp-content:uploads:2020:06:Radinet_Ahdi_Khalid_4Print112.pdf", "totalPages": 80, "donePages": 79, "status": "COMPLETE", "percent": 98.8, "category": "Literature & Modern Prose", "desc": "Modern Harari prose by Khalid", "words": 6650, "chars": 33623, "sizeKB": 78.1, "preview": "ዋዲሕ ራሤት አዳ ዋ ኔሮትል 2012 አ.ሐ.\n\nሲነት ሳይ፦ ሐጆካ? አሽኻመጥ ሚን ወጥመኝ?የነቢበ ዚሐደ\nኢንዝ የጥፋእ፤ ዳባየቤም\n\nከርሊቤ ማቀ ኢዝቤ አስበት ወመኝ በላይ ሚን\nወጥመኝ፤ አየወ አሤት\n\nአነነሼ በላይ ዘበለሻም አልወ አን ተሤረር\nተክከት ለለሻክ አበሤር በለ::\n\nኢን ዘር፦ ..."}, {"slug": "ECBHararisong", "filename": "https::everythingharar.com:wp-content:uploads:2020:09:ECBHararisong.pdf", "totalPages": 206, "donePages": 93, "status": "IN_PROGRESS", "percent": 45.1, "category": "Songbook & Oral Poetry", "desc": "Traditional Harari songs and poetic hymns", "words": 7259, "chars": 40454, "sizeKB": 90.3, "preview": "የመጀመሪያ ሥራ የሆነውን አባቷ ያዳመጠችውን\nከሰበሰቡት የመሰኖ ዘፈን በመዘፈን የአድማጭን ምላሽ በጆሮዋ\nመጠበቅ ጀመረች።ስርጉ ላይ የነሩ ሁሉ ተደመው ባህለ እና ባህላዊ\nሙዚቃው እየሻከረ በመጣበት ጊዜ ዳጣም በማድመጣቸው እጅጉን\nተደስቱ። አበረታቷት እንድትቀጥልበት ገፋፋቷት።በጊዜው ሁስ..."}, {"slug": "ECeleewaleeme", "filename": "https::everythingharar.com:wp-content:uploads:2020:09:ECeleewaleeme.pdf", "totalPages": 111, "donePages": 0, "status": "QUEUED", "percent": 0.0, "category": "Anthology & Poetry", "desc": "Literary compilation and dialectal poetry", "words": 0, "chars": 0, "sizeKB": 0.0, "preview": ""}, {"slug": "Ethiopians_Speak-Harari_Wolf_Leslau_s", "filename": "https::everythingharar.com:wp-content:uploads:2021:10:Ethiopians_Speak-Harari_Wolf_Leslau_s.pdf", "totalPages": 284, "donePages": 0, "status": "QUEUED", "percent": 0.0, "category": "Comparative Dialectology", "desc": "Monumental Wolf Leslau study with interlinear glosses", "words": 0, "chars": 0, "sizeKB": 0.0, "preview": ""}, {"slug": "Abdurahman-Harari-Amharic-Dectionery", "filename": "https::everythingharar.com:wp-content:uploads:2025:09:Abdurahman-Harari-Amharic-Dectionery.pdf", "totalPages": 239, "donePages": 0, "status": "QUEUED", "percent": 0.0, "category": "Bilingual Dictionary", "desc": "Comprehensive Harari-Amharic modern dictionary", "words": 0, "chars": 0, "sizeKB": 0.0, "preview": ""}, {"slug": "sophomore_harari", "filename": "sophomore_harari.pdf", "totalPages": 137, "donePages": 0, "status": "QUEUED", "percent": 0.0, "category": "University Curriculum", "desc": "University level Harari language instructional manual", "words": 0, "chars": 0, "sizeKB": 0.0, "preview": ""}]};
+
+    let activeFilter = 'ALL';
+    let searchQuery = '';
+
+    function initDashboard() {
+      renderKPIs();
+      renderBooks();
+    }
+
+    function renderKPIs() {
+      const d = CORPUS_DATA;
+      const cards = [
+        {
+          label: 'Total Progress',
+          value: d.overallPercent + '%',
+          sub: d.donePages.toLocaleString() + ' / ' + d.totalPages.toLocaleString() + ' pages',
+          color: 'text-emerald-400',
+          badge: 'Live',
+          badgeBg: 'bg-emerald-950/60 text-emerald-400 border-emerald-800/60'
+        },
+        {
+          label: 'Corpus Text Size',
+          value: d.totalSizeMB + ' MB',
+          sub: 'UTF-8 Encoded Fidel Text',
+          color: 'text-cyan-400',
+          badge: 'Clean Text',
+          badgeBg: 'bg-cyan-950/60 text-cyan-400 border-cyan-800/60'
+        },
+        {
+          label: 'Total Words',
+          value: d.totalWords.toLocaleString(),
+          sub: d.totalChars.toLocaleString() + ' Fidel glyphs',
+          color: 'text-amber-400',
+          badge: 'Vocabulary',
+          badgeBg: 'bg-amber-950/60 text-amber-400 border-amber-800/60'
+        },
+        {
+          label: 'BPE Tokens (NMT)',
+          value: Math.round(d.totalWords * 1.6).toLocaleString(),
+          sub: 'SentencePiece Target: ~850k',
+          color: 'text-purple-400',
+          badge: 'Subwords',
+          badgeBg: 'bg-purple-950/60 text-purple-400 border-purple-800/60'
+        },
+        {
+          label: 'Volumes Completed',
+          value: d.completedBooks + ' / ' + d.books.length,
+          sub: d.inProgressBooks + ' Active, ' + d.queuedBooks + ' Pending',
+          color: 'text-emerald-400',
+          badge: 'Books',
+          badgeBg: 'bg-emerald-950/60 text-emerald-400 border-emerald-800/60'
+        }
+      ];
+
+      const container = document.getElementById('statsCards');
+      container.innerHTML = cards.map(c => `
+        <div class="bg-[var(--card,#131b2e)] border border-[var(--border,#1e293b)] rounded-xl p-4 shadow-sm space-y-2">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-medium text-[var(--muted-foreground,#94a3b8)]">${c.label}</span>
+            <span class="text-[11px] px-1.5 py-0.5 rounded border mono-font ${c.badgeBg}">${c.badge}</span>
+          </div>
+          <div class="text-2xl font-bold mono-font ${c.color}">${c.value}</div>
+          <div class="text-xs text-slate-400">${c.sub}</div>
+        </div>
+      `).join('');
+
+      document.getElementById('overallPercentBadge').innerText = d.overallPercent + '%';
+      document.getElementById('pageProgressSubtitle').innerText = d.donePages.toLocaleString() + ' / ' + d.totalPages.toLocaleString() + ' pages';
+      document.getElementById('mainProgressBar').style.width = d.overallPercent + '%';
+
+      document.getElementById('tokenNMT').innerText = '~' + Math.round(d.totalWords * 1.6).toLocaleString() + ' tokens';
+      document.getElementById('tokenGemini').innerText = '~' + Math.round(d.totalWords * 2.3).toLocaleString() + ' tokens';
+      document.getElementById('tokenGPT').innerText = '~' + Math.round(d.totalWords * 5.2).toLocaleString() + ' tokens';
+    }
+
+    function renderBooks() {
+      const grid = document.getElementById('booksGrid');
+      const filtered = CORPUS_DATA.books.filter(b => {
+        const matchesStatus = (activeFilter === 'ALL') || (b.status === activeFilter);
+        const matchesSearch = !searchQuery || 
+          b.slug.toLowerCase().includes(searchQuery.toLowerCase()) || 
+          b.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          b.desc.toLowerCase().includes(searchQuery.toLowerCase());
+        return matchesStatus && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full p-8 text-center bg-slate-900/30 border border-slate-800 rounded-xl text-slate-400 text-sm">
+            No books found matching criteria.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(b => {
+        let statusBadge = '';
+        let borderClass = 'border-slate-800/80';
+        let barColor = 'bg-emerald-500';
+
+        if (b.status === 'COMPLETE') {
+          statusBadge = '<span class="px-2 py-0.5 text-[11px] font-medium bg-emerald-950/70 border border-emerald-800/70 text-emerald-400 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> Complete</span>';
+          borderClass = 'border-slate-800/80 hover:border-slate-700';
+          barColor = 'bg-emerald-500';
+        } else if (b.status === 'IN_PROGRESS') {
+          statusBadge = '<span class="px-2 py-0.5 text-[11px] font-medium bg-amber-950/70 border border-amber-800/70 text-amber-300 rounded-full flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-amber-400 pulse-active"></span> In Progress</span>';
+          borderClass = 'border-amber-800/60 ring-1 ring-amber-500/20';
+          barColor = 'bg-amber-400';
+        } else {
+          statusBadge = '<span class="px-2 py-0.5 text-[11px] font-medium bg-slate-900 border border-slate-700 text-slate-400 rounded-full">Queued</span>';
+          borderClass = 'border-slate-800/50 opacity-80';
+          barColor = 'bg-slate-600';
+        }
+
+        const previewHtml = b.preview ? `
+          <div class="mt-3 pt-3 border-t border-slate-800/80 space-y-1.5">
+            <div class="flex items-center justify-between text-[11px] text-slate-400">
+              <span class="font-medium text-slate-300">Fidel Sample Preview</span>
+              <span class="mono-font text-slate-500">${b.sizeKB} KB</span>
+            </div>
+            <div class="p-2.5 rounded bg-slate-950/80 border border-slate-900 text-xs text-slate-300 ethiopic-font leading-relaxed max-h-24 overflow-y-auto whitespace-pre-wrap select-all">
+              ${b.preview}
+            </div>
+          </div>
+        ` : '';
+
+        return `
+          <div class="bg-[var(--card,#131b2e)] border ${borderClass} rounded-xl p-4 shadow-sm flex flex-col justify-between transition-all duration-200 hover:shadow-md">
+            <div class="space-y-3">
+              <div class="flex items-start justify-between gap-2">
+                <div class="space-y-0.5">
+                  <span class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">${b.category}</span>
+                  <h3 class="text-sm font-bold text-[var(--foreground,#f8fafc)] leading-snug break-all mono-font" title="${b.slug}">${b.slug}</h3>
+                </div>
+                ${statusBadge}
+              </div>
+
+              <p class="text-xs text-[var(--muted-foreground,#94a3b8)] line-clamp-2">${b.desc}</p>
+
+              <div class="space-y-1.5 pt-1">
+                <div class="flex justify-between text-xs mono-font text-slate-400">
+                  <span>${b.donePages} / ${b.totalPages} pages</span>
+                  <span class="${b.status === 'COMPLETE' ? 'text-emerald-400 font-bold' : (b.status === 'IN_PROGRESS' ? 'text-amber-400 font-bold' : 'text-slate-500')}">${b.percent}%</span>
+                </div>
+                <div class="w-full h-2 bg-slate-800/90 rounded-full overflow-hidden">
+                  <div class="h-full ${barColor} rounded-full transition-all duration-500" style="width: ${b.percent}%"></div>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 text-xs pt-1">
+                <div class="p-2 rounded bg-slate-900/60 border border-slate-800/60">
+                  <span class="text-[11px] text-slate-500 block">Words</span>
+                  <span class="font-bold text-slate-200 mono-font">${b.words ? b.words.toLocaleString() : '—'}</span>
+                </div>
+                <div class="p-2 rounded bg-slate-900/60 border border-slate-800/60">
+                  <span class="text-[11px] text-slate-500 block">Characters</span>
+                  <span class="font-bold text-slate-200 mono-font">${b.chars ? b.chars.toLocaleString() : '—'}</span>
+                </div>
+              </div>
+            </div>
+
+            ${previewHtml}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterStatus(status) {
+      activeFilter = status;
+      ['ALL', 'COMPLETE', 'IN_PROGRESS', 'QUEUED'].forEach(s => {
+        const btn = document.getElementById('btnFilter' + s);
+        if (s === status) {
+          btn.className = 'px-2.5 py-1 rounded-md font-medium bg-emerald-600 text-white transition-colors';
+        } else {
+          btn.className = 'px-2.5 py-1 rounded-md font-medium text-slate-400 hover:text-white transition-colors';
+        }
+      });
+      renderBooks();
+    }
+
+    function onSearchInput(val) {
+      searchQuery = val;
+      renderBooks();
+    }
+
+    window.addEventListener('DOMContentLoaded', initDashboard);
+  </script>
+</body>
+</html>
