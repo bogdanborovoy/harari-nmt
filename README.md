@@ -328,14 +328,24 @@ The physical library collected on disk comprises **20 volumes, 3,536 pages**, to
 | `Abdurahman-Harari-Amharic-Dectionery.pdf` | 239 | 82.8 MB | **Chuqtee Kitab:** Dr. Abdurahman's authoritative 40,000-word Harari-Amharic dictionary. Queued. |
 | `sophomore_harari.pdf` | 137 | 1.3 MB | **University Reader:** Syntax analysis and reading passages by Ali Naji & Amir Ali Akil. Queued. |
 
-### 8.2. Addis Ababa University (AAU) Academic Dissertations (`aau university/`) — 1,195 pages (~250,000 words)
+### 8.2. Addis Ababa University (AAU) Academic Dissertations (`aau university/`) — 1,195 pages (~295,000 words, 1.9M chars)
 
-Native digital Unicode PDF texts requiring zero Vision OCR quota (instant direct extraction):
-* **Beniam Mitiku (2013)** — *Harari Language: A Descriptive Grammar* (**625 pages**). The definitive reference grammar: exhaustive phonology, morphology, syntax, and transcribed Harar FM broadcasts.
-* **Abdulhamid Abdulahi (2025)** — Critical edition of *Kitāb al-Farā'iḍ* with modern Harari transcription (**272 pages**).
-* **Beniam Mitiku (2004)** — *Noun Phrase Structure in Harari* (**116 pages**), detailed interlinear glossed text (IGT).
-* **Nadia Ali (2015)** — *Code-Switching in Oromiffa and Harari* (**91 pages**), transcribed authentic spoken market/home dialogues.
-* **Binyam Hailu (2021)** — *Influence of Arab and Asian Traders on Harari Cultural Identity* (**91 pages**).
+Native digital Unicode PDF texts (100% directly extracted):
+* **Beniam Mitiku (2013)** — *Harari Language: A Descriptive Grammar* (**625 pages**, 140,612 words, 1,021,315 chars). Exhaustive descriptive reference grammar with transcribed radio broadcasts.
+* **Abdulhamid Abdulahi (2025)** — *Philological and Linguistic Study of Harari Manuscripts* (**272 pages**, 93,221 words, 469,662 chars). Critical philological edition of *Kitāb al-Farā'iḍ* and Old Harari Ajami manuscripts.
+* **Beniam Mitiku (2004)** — *Noun Phrase Structure in Harari* (**116 pages**, 26,235 words, 162,246 chars).
+* **Nadia Ali (2015)** — *Code-Switching in Oromiffa and Harari* (**91 pages**, 13,489 words, 100,066 chars), transcribed authentic spoken market/home dialogues.
+* **Binyam Hailu (2021)** — *Influence of Arab and Asian Traders on Harari Cultural Identity* (**91 pages**, 21,728 words, 151,683 chars).
+
+#### Practical ML Implications (Encoder Continual Pre-training & NMT):
+1. **Script Composition (65–75% Academic English):**
+   The dissertations are authored in English as the institutional metalanguage of Addis Ababa University. Linguistic examples in Harari are presented **not in Ethiopic Fidel**, but in International Phonetic Alphabet (IPA/Leslau system with diacritics: *ä, å, ā, ē, ī, ō, ū, š, ž, č, ñ, ň, ʔ, ʕ, ħ*), alongside Arabic Ajami in Abdulhamid's work (12.6% of characters).
+2. **Inadmissibility for Direct MLM Continual Pre-training on Fidel:**
+   Raw text from these dissertations **cannot be fed directly** into Masked Language Modeling (MLM) for Ge'ez Fidel encoder adaptation (`Afro-XLMR`), as doing so would contaminate the model with English academic prose.
+3. **Primary ML Role: Parallel Bitext & Deterministic Transliteration:**
+   - The dissertations provide thousands of structured `Harari (IPA) -> Morpheme Gloss -> English Translation` interlinear pairs.
+   - Because the phoneme-to-Fidel mapping is strictly deterministic (`azziyāč` $\rightarrow$ `አዚያች`), an automated rule-based transliterator can extract approximately **15,000 clean parallel Harari ↔ English sentence pairs** for Seq2Seq fine-tuning (NLLB-200 / ByT5) and syntactic verification.
+
 
 ### 8.3. Curated Lexical Datasets (`data/`)
 
