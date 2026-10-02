@@ -1,0 +1,36 @@
+# PDF source files (too large for git, ~400MB total)
+books/*.pdf
+books/images/
+
+# Datasets and OCR text corpora (local staging)
+data/
+books/texts/
+
+# AAU dissertations (PDFs)
+aau university/
+
+# Cached/generated
+__pycache__/
+*.pyc
+.DS_Store
+
+# Temporary test files
+*.jpg
+*.png
+test_ocr.py
+test_abdurahman_ocr.py
+ocr_result_*.txt
+page_*_preview.jpg
+no-translator.png
+
+# Editor temp files
+~$*
+*.swp
+*.swo
+
+# macOS
+.Spotlight-V100
+.Trashes
+
+# Misc scratch
+план?
