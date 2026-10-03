@@ -314,25 +314,26 @@ Open deployment in community channels inevitably sparks disputes over loanword p
 
 The physical library collected on disk comprises **20 volumes, 3,536 pages**, totaling **~730,000 words (~1.8M tokens)**:
 
-### 8.1. Printed Books Library (`books/`) — 2,341 pages (~480,000 words)
+### 8.1. National Educational & Cultural Books (`books/`) — 2,432 pages (16 Volumes, 100% Completed, 530,469 words, 2.96M chars, 4.62 MB)
 
-| Document | Pages | Raw Size | Linguistic Nature & Dataset Role |
-| :--- | :---: | :---: | :--- |
-| `ECM_proverbs_239p.pdf` | 239 | 0.9 MB | **Fidel Bilingual:** Proverbs, idioms, everyday 20th-century lexicon. Fully OCR-extracted (37.5k words). |
-| `MEDEBEL.PDF.pdf` | 249 | 13.4 MB | **Fidel Bilingual Anthology:** Parallel Harari ↔ Amharic historical texts. Fully OCR-extracted (58.0k words). |
-| `BreakdownHarariGrammerEH.pdf` | 151 | 4.7 MB | **Fidel + Latin/Eng Grammar:** Ali Naji (2012). Verb conjugation paradigms and sentence templates (38.8k words). |
-| `LesluHarariDictionary145.pdf` | 86 | 22.2 MB | **Latin/IPA Comparative Lexicon:** Wolf Leslau (1963). Semitic root etymologies (80.3k words). |
-| `Wareg_Sinan_0001watermark.pdf` | 49 | 17.0 MB | **Fidel Idiomatic Corpus:** Fixed expressions and metaphors (7.9k words). |
-| `HIBIRI_WA_GIBERY.pdf` | 79 | 1.2 MB | **Fidel Folklore & Fables:** Narrative children's stories in clean Harari (11.2k words). |
-| `Wareg_Zaman-1_2.pdf` | 163 | 20.9 MB | **Narrative Prose (Part 1):** Harari translation of *Futuh al-Habash* (~37k words). In progress (132/163 p). |
-| `Wareg_Zaman-2_2.pdf` | 164 | 22.1 MB | **Narrative Prose (Part 2):** Continuous historical Fidel text (~38k words). Queued. |
-| `keetab-fraeed.pdf` | 104 | 11.5 MB | **Classical Law & Religion:** *Kitāb al-Farā'iḍ* in Fidel script (~21k words). Queued. |
-| `Radinet_Ahdi_Khalid_4Print112.pdf` | 80 | 1.6 MB | **Ethnographic Prose:** Harari wedding rituals and customs (~14k words). Queued. |
-| `ECBHararisong.pdf` | 206 | 32.1 MB | **Gey Faqar:** Traditional poetry, sufi dhikr, and folk songs (~28k words). Queued. |
-| `ECeleewaleeme.pdf` | 111 | 2.8 MB | **Illi wa Limi:** Folk tales and riddles (~20k words). Queued. |
-| `Ethiopians_Speak-Harari_Wolf_Leslau_s.pdf` | 284 | 75.0 MB | **Gold NMT Bitext (Leslau 1965):** ~4,000–5,000 sentence pairs with interlinear morphemic translation. Queued. |
-| `Abdurahman-Harari-Amharic-Dectionery.pdf` | 239 | 82.8 MB | **Chuqtee Kitab:** Dr. Abdurahman's authoritative 40,000-word Harari-Amharic dictionary. Queued. |
-| `sophomore_harari.pdf` | 137 | 1.3 MB | **University Reader:** Syntax analysis and reading passages by Ali Naji & Amir Ali Akil. Queued. |
+| Document | Pages | Words | Chars | Content & NLP Role |
+| :--- | :---: | :---: | :---: | :--- |
+| `ECM_proverbs_239p.pdf` | 239 | 31,707 | 142,680 | **Fidel Folklore:** Comprehensive 239-page collection of Harari proverbs and idioms with commentaries by Fidal Abdi. |
+| `MEDEBEL.PDF.pdf` | 218 | 46,341 | 238,581 | **Fidel Anthology:** Standard Harari modern prose anthology and literature. |
+| `BreakdownHarariGrammerEH.pdf` | 151 | 36,626 | 238,318 | **Fidel + Latin Grammar:** Ali Naji (2012). Verb conjugation paradigms and sentence templates. |
+| `LesluHarariDictionary145.pdf` | 145 | 80,302 | 484,746 | **Latin / IPA Lexicon:** Wolf Leslau (1963). Semitic root etymologies and comparative phonetic entries. |
+| `Wareg_Sinan_0001watermark.pdf` | 72 | 6,898 | 31,754 | **Fidel Idiomatic Corpus:** Fixed expressions, colloquial metaphors, and pedagogical reader. |
+| `HIBIRI_WA_GIBERY.pdf` | 76 | 10,125 | 54,750 | **Fidel Folklore & Fables:** Narrative youth stories and cultural heritage in clean Harari. |
+| `Wareg_Zaman-1_2.pdf` | 168 | 33,855 | 152,803 | **Historical Periodical (Part 1):** Cultural magazine containing chronicle translations and regional essays. |
+| `Wareg_Zaman-2_2.pdf` | 182 | 34,942 | 166,623 | **Historical Periodical (Part 2):** Continuous historical Fidel prose, literary criticism, and linguistics. |
+| `keetab-fraeed.pdf` | 114 | 10,518 | 54,315 | **Classical Islamic Law:** *Kitāb al-Farā'iḍ* (inheritance jurisprudence) translated into Fidel script. |
+| `Radinet_Ahdi_Khalid_4Print112.pdf` | 80 | 6,972 | 35,967 | **Ethnographic Prose:** Documentation of Harari matrimonial rites, customs, and community protocols by Ahdi Khalid. |
+| `ECBHararisong.pdf` | 206 | 20,328 | 100,124 | **Gēy Faqar:** Traditional poetic hymns, sufi dhikr, and folk songs compiled by Kikiya Tesfaye. |
+| `ECeleewaleeme.pdf` | 111 | 6,212 | 33,176 | **Illi wa Limi:** Folk tales, oral riddles, and cultural legends anthology. |
+| `Ethiopians_Speak-Harari_Wolf_Leslau_s.pdf` | 284 | 114,812 | 737,645 | **Gold NMT Bitext (Leslau 1965):** Authoritative parallel corpus with interlinear morphemic translation. |
+| `Abdurahman-Harari-Amharic-Dectionery.pdf` | 239 | 50,490 | 215,424 | **Chuqtee Kitab (1984):** Dr. Abdurahman's authoritative 40,000-word Harari-Amharic reference dictionary. |
+| `sophomore_harari.pdf` | 137 | 26,395 | 170,945 | **University Reader:** Syntax analysis, reading passages, and exercises by Ali Naji & Amir Ali Akil. |
+| `content.pdf` | 62 | 13,946 | 101,728 | **School Curriculum Reader:** Official regional textbook approved by the Harari Regional Education Bureau. |
 
 ### 8.2. Addis Ababa University (AAU) Academic Dissertations (`aau university/`) — 1,195 pages (~295,000 words, 1.9M chars)
 
